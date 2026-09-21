@@ -13,7 +13,6 @@
 -- ----------------------------------------------------------------------------
 -- 1) DDL: base de datos
 -- ----------------------------------------------------------------------------
-DROP DATABASE IF EXISTS ej2_nube_roja_studio;
 CREATE DATABASE ej2_nube_roja_studio
     CHARACTER SET utf8mb4
     COLLATE utf8mb4_spanish_ci;
@@ -118,47 +117,26 @@ INSERT INTO tareas (titulo, estado, prioridad, fecha_limite, id_proyecto, id_des
    ============================================================================ */
 
 -- Consulta 1: mostrar todos los desarrolladores asignados al proyecto "Space Adventure".
-SELECT d.id_desarrollador,
-       CONCAT(d.nombres, ' ', d.apellidos) AS desarrollador,
-       d.rol,
-       pd.horas_semana,
-       p.nombre AS proyecto
+SELECT d.id_desarrollador, d.nombres, d.apellidos, d.rol
 FROM desarrolladores AS d
 INNER JOIN proyecto_desarrollador AS pd ON pd.id_desarrollador = d.id_desarrollador
 INNER JOIN proyectos AS p              ON p.id_proyecto        = pd.id_proyecto
-WHERE p.nombre = 'Space Adventure'
-ORDER BY d.apellidos;
+WHERE p.nombre = 'Space Adventure';
 
 -- Consulta 2: listar todas las tareas pendientes.
-SELECT t.id_tarea,
-       t.titulo,
-       t.prioridad,
-       t.fecha_limite,
-       p.nombre AS proyecto,
-       CONCAT(d.nombres, ' ', d.apellidos) AS responsable
-FROM tareas AS t
-INNER JOIN proyectos AS p       ON p.id_proyecto        = t.id_proyecto
-INNER JOIN desarrolladores AS d ON d.id_desarrollador   = t.id_desarrollador
-WHERE t.estado = 'pendiente'
-ORDER BY t.fecha_limite;
+SELECT *
+FROM tareas
+WHERE estado = 'pendiente';
 
 -- Consulta 3: contar cuantas tareas tiene asignado cada desarrollador.
--- Se usa LEFT JOIN para que tambien aparezcan los que tienen 0 tareas.
-SELECT CONCAT(d.nombres, ' ', d.apellidos) AS desarrollador,
-       d.rol,
-       COUNT(t.id_tarea) AS total_tareas
+-- Se usa LEFT JOIN para que tambien aparezcan los que no tienen tareas.
+SELECT d.nombres, d.apellidos, COUNT(t.id_tarea) AS total_tareas
 FROM desarrolladores AS d
 LEFT JOIN tareas AS t ON t.id_desarrollador = d.id_desarrollador
-GROUP BY d.id_desarrollador, desarrollador, d.rol
-ORDER BY total_tareas DESC, desarrollador;
+GROUP BY d.id_desarrollador, d.nombres, d.apellidos;
 
 -- Consulta 4: mostrar los proyectos y la cantidad de desarrolladores que participan en cada uno.
-SELECT p.id_proyecto,
-       p.nombre AS proyecto,
-       p.plataforma,
-       p.estado,
-       COUNT(pd.id_desarrollador) AS total_desarrolladores
+SELECT p.nombre AS proyecto, COUNT(pd.id_desarrollador) AS total_desarrolladores
 FROM proyectos AS p
 LEFT JOIN proyecto_desarrollador AS pd ON pd.id_proyecto = p.id_proyecto
-GROUP BY p.id_proyecto, p.nombre, p.plataforma, p.estado
-ORDER BY total_desarrolladores DESC;
+GROUP BY p.id_proyecto, p.nombre;

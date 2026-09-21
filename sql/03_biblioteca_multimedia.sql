@@ -6,7 +6,6 @@
    Relacion: directores 1:N peliculas
    ============================================================================ */
 
-DROP DATABASE IF EXISTS ej3_sala_lumiere;
 CREATE DATABASE ej3_sala_lumiere
     CHARACTER SET utf8mb4
     COLLATE utf8mb4_spanish_ci;
@@ -69,36 +68,16 @@ INSERT INTO peliculas (titulo, genero, anio_estreno, duracion_minutos, idioma, c
    CONSULTAS SOLICITADAS
    ============================================================================ */
 
--- Consulta 1: mostrar todas las peliculas (con el director que las dirigio).
-SELECT p.id_pelicula,
-       p.titulo,
-       p.genero,
-       p.anio_estreno,
-       p.duracion_minutos,
-       CONCAT(d.nombres, ' ', d.apellidos) AS director
-FROM peliculas AS p
-INNER JOIN directores AS d ON d.id_director = p.id_director
-ORDER BY p.titulo;
+-- Consulta 1: mostrar todas las peliculas.
+SELECT *
+FROM peliculas;
 
 -- Consulta 2: mostrar las peliculas estrenadas despues de 2020.
-SELECT p.id_pelicula,
-       p.titulo,
-       p.genero,
-       p.anio_estreno,
-       CONCAT(d.nombres, ' ', d.apellidos) AS director
-FROM peliculas AS p
-INNER JOIN directores AS d ON d.id_director = p.id_director
-WHERE p.anio_estreno > 2020
-ORDER BY p.anio_estreno DESC, p.titulo;
+SELECT *
+FROM peliculas
+WHERE anio_estreno > 2020;
 
--- Consulta 3: mostrar las peliculas de un genero determinado (Ciencia ficcion).
-SELECT p.id_pelicula,
-       p.titulo,
-       p.anio_estreno,
-       p.duracion_minutos,
-       p.copias_disponibles,
-       CONCAT(d.nombres, ' ', d.apellidos) AS director
-FROM peliculas AS p
-INNER JOIN directores AS d ON d.id_director = p.id_director
-WHERE p.genero = 'Ciencia ficcion'
-ORDER BY p.anio_estreno DESC;
+-- Consulta 3: mostrar las peliculas de un genero determinado.
+SELECT *
+FROM peliculas
+WHERE genero = 'Ciencia ficcion';

@@ -8,7 +8,6 @@
 -- ----------------------------------------------------------------------------
 -- 1) DDL: creacion de la base de datos
 -- ----------------------------------------------------------------------------
-DROP DATABASE IF EXISTS ej1_taller_prisma3d;
 CREATE DATABASE ej1_taller_prisma3d
     CHARACTER SET utf8mb4
     COLLATE utf8mb4_spanish_ci;
@@ -57,17 +56,14 @@ INSERT INTO productos (codigo, nombre, categoria, precio, stock, fecha_ingreso) 
 
 -- Consulta 1: mostrar todos los productos.
 SELECT *
-FROM productos
-ORDER BY id_producto;
+FROM productos;
 
 -- Consulta 2: mostrar los productos cuyo precio sea mayor a $50.
-SELECT id_producto, codigo, nombre, categoria, precio, stock
+SELECT *
 FROM productos
-WHERE precio > 50
-ORDER BY precio DESC;
+WHERE precio > 50;
 
 -- Consulta 3: mostrar los productos que tengan stock menor a 10.
-SELECT id_producto, codigo, nombre, categoria, stock, precio
+SELECT *
 FROM productos
-WHERE stock < 10
-ORDER BY stock ASC;
+WHERE stock < 10;

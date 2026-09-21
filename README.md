@@ -89,7 +89,7 @@ de una carrera especifica.
 | `torneo_equipo` | **Tabla puente** de la relacion N:M |
 
 Consultas: jugadores de "Dragones Digitales" · torneos de este anio · jugadores
-por equipo · equipos por torneo (en dos formatos).
+por equipo · equipos por torneo.
 
 ---
 
@@ -110,8 +110,8 @@ Desde la linea de comandos tambien funciona:
 mysql -u root -p < sql/00_tarea1_completo.sql
 ```
 
-> Cada script empieza con `DROP DATABASE IF EXISTS`, asi que se puede reejecutar
-> las veces que haga falta sin errores de datos duplicados.
+> Si una base ya existe de una ejecucion anterior, eliminala antes de volver a
+> correr el script (en HeidiSQL: clic derecho sobre la base -> Eliminar).
 
 ---
 
@@ -129,6 +129,8 @@ Tomadas de las **recomendaciones del enunciado**:
 - Relaciones N:M resueltas con **tabla puente** y clave primaria compuesta
   (ejercicios 2 y 5).
 - `UNIQUE` en los campos que no deben repetirse (codigo, correo, cedula, nick).
+- Consultas ajustadas a lo que pide el enunciado, sin ordenamientos ni columnas
+  que no se solicitan.
 - Datos de prueba suficientes para que **toda consulta devuelva filas visibles**
   en la captura, incluyendo casos limite (menores de edad que deben quedar
   fuera del filtro, torneos de otros anios, equipos con distinta cantidad de
@@ -140,7 +142,7 @@ Tomadas de las **recomendaciones del enunciado**:
 
 ## Entregables de la tarea
 
-- [ ] Documento **PDF** con las capturas de las 18 consultas ejecutadas en HeidiSQL.
+- [ ] Documento **PDF** con las capturas de las 17 consultas ejecutadas en HeidiSQL.
 - [ ] Archivo **`.sql`** exportado desde HeidiSQL.
 - [ ] Ambos dentro de una **carpeta de Drive** compartida con enlace de lectura.
 

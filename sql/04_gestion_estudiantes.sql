@@ -8,7 +8,6 @@
      - estudiantes 1:N matriculas
    ============================================================================ */
 
-DROP DATABASE IF EXISTS ej4_instituto_antares;
 CREATE DATABASE ej4_instituto_antares
     CHARACTER SET utf8mb4
     COLLATE utf8mb4_spanish_ci;
@@ -95,37 +94,18 @@ INSERT INTO matriculas (id_estudiante, periodo, fecha, estado) VALUES
    CONSULTAS SOLICITADAS
    ============================================================================ */
 
--- Consulta 1: mostrar todos los estudiantes (con su carrera).
-SELECT e.id_estudiante,
-       e.cedula,
-       CONCAT(e.apellidos, ' ', e.nombres) AS estudiante,
-       e.fecha_nacimiento,
-       e.ciudad,
-       c.nombre AS carrera
-FROM estudiantes AS e
-INNER JOIN carreras AS c ON c.id_carrera = e.id_carrera
-ORDER BY e.apellidos;
+-- Consulta 1: mostrar todos los estudiantes.
+SELECT *
+FROM estudiantes;
 
 -- Consulta 2: mostrar los estudiantes mayores de 18 anios.
--- TIMESTAMPDIFF calcula la edad exacta a partir de la fecha de nacimiento.
-SELECT e.id_estudiante,
-       CONCAT(e.apellidos, ' ', e.nombres) AS estudiante,
-       e.fecha_nacimiento,
-       TIMESTAMPDIFF(YEAR, e.fecha_nacimiento, CURDATE()) AS edad,
-       c.nombre AS carrera
-FROM estudiantes AS e
-INNER JOIN carreras AS c ON c.id_carrera = e.id_carrera
-WHERE TIMESTAMPDIFF(YEAR, e.fecha_nacimiento, CURDATE()) > 18
-ORDER BY edad DESC;
+-- TIMESTAMPDIFF calcula la edad a partir de la fecha de nacimiento.
+SELECT *
+FROM estudiantes
+WHERE TIMESTAMPDIFF(YEAR, fecha_nacimiento, CURDATE()) > 18;
 
 -- Consulta 3: mostrar los estudiantes de una carrera especifica.
-SELECT e.id_estudiante,
-       e.cedula,
-       CONCAT(e.apellidos, ' ', e.nombres) AS estudiante,
-       e.correo,
-       c.nombre    AS carrera,
-       c.modalidad
+SELECT e.*
 FROM estudiantes AS e
 INNER JOIN carreras AS c ON c.id_carrera = e.id_carrera
-WHERE c.nombre = 'Desarrollo de software'
-ORDER BY e.apellidos;
+WHERE c.nombre = 'Desarrollo de software';

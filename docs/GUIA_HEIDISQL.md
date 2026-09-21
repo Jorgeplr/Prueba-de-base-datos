@@ -96,7 +96,7 @@ Flujo recomendado para la tarea:
 | `Table 'x' doesn't exist` | Se ejecuto el `SELECT` sin haber creado las tablas | Ejecuta primero el bloque DDL + INSERT del ejercicio |
 | `Unknown database 'ej1_...'` | No se ejecuto el `CREATE DATABASE` | Ejecuta el bloque inicial del script |
 | `Cannot add or update a child row: a foreign key constraint fails` | Se insertaron las filas en desorden | Respeta el orden del script: primero las tablas padre (`equipos`, `proyectos`, `carreras`, `directores`) y luego las hijas |
-| `Duplicate entry` al reejecutar | Los `INSERT` ya se habian ejecutado | Vuelve a correr el script completo del ejercicio: el `DROP DATABASE IF EXISTS` del inicio limpia todo |
+| `Can't create database; database exists` o `Duplicate entry` | La base ya se creo en un intento anterior | Elimina la base (clic derecho sobre ella -> **Eliminar**) y vuelve a ejecutar el script desde el `CREATE DATABASE` |
 | Acentos que se ven como `Ã±` | Codificacion equivocada al abrir el archivo | Vuelve a cargarlo indicando **UTF-8** |
 
 ---
@@ -114,8 +114,8 @@ Por cada consulta solicitada, toma una captura donde se vea:
 Atajo de Windows: `Win + Shift + S` (Recorte) o `Alt + Impr Pant` para capturar
 solo la ventana de HeidiSQL.
 
-Son 18 capturas en total: 3 (Ej. 1) + 4 (Ej. 2) + 3 (Ej. 3) + 3 (Ej. 4) +
-5 (Ej. 5, contando la variante compacta de la consulta 4).
+Son 17 capturas en total: 3 (Ej. 1) + 4 (Ej. 2) + 3 (Ej. 3) + 3 (Ej. 4) +
+4 (Ej. 5).
 
 En `docs/RESULTADOS_CONSULTAS.md` estan los resultados que debe devolver cada
 consulta, para que compares antes de capturar.
@@ -152,7 +152,7 @@ archivo escrito a mano.
 
 Segun el enunciado se entrega el **link de una carpeta de Drive** que contenga:
 
-- [ ] El documento **PDF** con las capturas de las 18 consultas.
+- [ ] El documento **PDF** con las capturas de las 17 consultas.
 - [ ] El archivo **`.sql`** exportado desde HeidiSQL.
 
 Antes de compartir el link, en Drive: clic derecho sobre la carpeta →

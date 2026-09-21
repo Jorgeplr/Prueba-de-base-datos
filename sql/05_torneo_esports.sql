@@ -9,7 +9,6 @@
      - torneos N:M equipos -> tabla puente torneo_equipo
    ============================================================================ */
 
-DROP DATABASE IF EXISTS ej5_liga_andina_esports;
 CREATE DATABASE ej5_liga_andina_esports
     CHARACTER SET utf8mb4
     COLLATE utf8mb4_spanish_ci;
@@ -120,58 +119,24 @@ INSERT INTO torneo_equipo (id_torneo, id_equipo, grupo, posicion_final) VALUES
    ============================================================================ */
 
 -- Consulta 1: mostrar los jugadores del equipo "Dragones Digitales".
-SELECT j.id_jugador,
-       j.nick,
-       j.nombre_real,
-       j.rol,
-       j.edad,
-       e.nombre AS equipo
+SELECT j.*
 FROM jugadores AS j
 INNER JOIN equipos AS e ON e.id_equipo = j.id_equipo
-WHERE e.nombre = 'Dragones Digitales'
-ORDER BY j.nick;
+WHERE e.nombre = 'Dragones Digitales';
 
 -- Consulta 2: listar los torneos programados para este anio.
-SELECT id_torneo,
-       nombre,
-       juego,
-       fecha_inicio,
-       fecha_fin,
-       sede,
-       premio_usd
+SELECT *
 FROM torneos
-WHERE YEAR(fecha_inicio) = YEAR(CURDATE())
-ORDER BY fecha_inicio;
+WHERE YEAR(fecha_inicio) = YEAR(CURDATE());
 
 -- Consulta 3: contar cuantos jugadores tiene cada equipo.
-SELECT e.id_equipo,
-       e.nombre AS equipo,
-       e.ciudad,
-       COUNT(j.id_jugador) AS total_jugadores
+SELECT e.nombre AS equipo, COUNT(j.id_jugador) AS total_jugadores
 FROM equipos AS e
 LEFT JOIN jugadores AS j ON j.id_equipo = e.id_equipo
-GROUP BY e.id_equipo, e.nombre, e.ciudad
-ORDER BY total_jugadores DESC, equipo;
+GROUP BY e.id_equipo, e.nombre;
 
 -- Consulta 4: mostrar que equipos participan en cada torneo.
-SELECT t.nombre   AS torneo,
-       t.juego,
-       t.fecha_inicio,
-       e.nombre   AS equipo,
-       te.grupo,
-       te.posicion_final
+SELECT t.nombre AS torneo, e.nombre AS equipo
 FROM torneos AS t
 INNER JOIN torneo_equipo AS te ON te.id_torneo = t.id_torneo
-INNER JOIN equipos AS e        ON e.id_equipo  = te.id_equipo
-ORDER BY t.fecha_inicio, te.grupo, e.nombre;
-
--- Variante compacta de la consulta 4: un renglon por torneo con la lista de equipos.
-SELECT t.nombre AS torneo,
-       t.juego,
-       COUNT(te.id_equipo)              AS total_equipos,
-       GROUP_CONCAT(e.nombre ORDER BY e.nombre SEPARATOR ', ') AS equipos_participantes
-FROM torneos AS t
-LEFT JOIN torneo_equipo AS te ON te.id_torneo = t.id_torneo
-LEFT JOIN equipos AS e        ON e.id_equipo  = te.id_equipo
-GROUP BY t.id_torneo, t.nombre, t.juego
-ORDER BY t.fecha_inicio;
+INNER JOIN equipos AS e        ON e.id_equipo  = te.id_equipo;

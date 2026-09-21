@@ -9,15 +9,15 @@
    sola vez (en HeidiSQL: F9 o "Ejecutar SQL"), o abrir el archivo individual
    de cada ejercicio dentro de la carpeta sql/.
 
-   ATENCION: cada bloque inicia con DROP DATABASE IF EXISTS, es decir, vuelve a
-   crear la base desde cero cada vez que se ejecuta.
-
    Bases de datos que se crean:
      ej1_taller_prisma3d       -> Ejercicio 1: administracion de productos
      ej2_nube_roja_studio      -> Ejercicio 2: estudio de videojuegos
      ej3_sala_lumiere          -> Ejercicio 3: biblioteca multimedia
      ej4_instituto_antares     -> Ejercicio 4: gestion de estudiantes
      ej5_liga_andina_esports   -> Ejercicio 5: torneo de eSports
+
+   Si alguna de estas bases ya existe, eliminala antes de volver a ejecutar el
+   script (en HeidiSQL: clic derecho sobre la base -> Eliminar).
    ============================================================================ */
 
 
@@ -35,7 +35,6 @@
 -- ----------------------------------------------------------------------------
 -- 1) DDL: creacion de la base de datos
 -- ----------------------------------------------------------------------------
-DROP DATABASE IF EXISTS ej1_taller_prisma3d;
 CREATE DATABASE ej1_taller_prisma3d
     CHARACTER SET utf8mb4
     COLLATE utf8mb4_spanish_ci;
@@ -84,20 +83,17 @@ INSERT INTO productos (codigo, nombre, categoria, precio, stock, fecha_ingreso) 
 
 -- Consulta 1: mostrar todos los productos.
 SELECT *
-FROM productos
-ORDER BY id_producto;
+FROM productos;
 
 -- Consulta 2: mostrar los productos cuyo precio sea mayor a $50.
-SELECT id_producto, codigo, nombre, categoria, precio, stock
+SELECT *
 FROM productos
-WHERE precio > 50
-ORDER BY precio DESC;
+WHERE precio > 50;
 
 -- Consulta 3: mostrar los productos que tengan stock menor a 10.
-SELECT id_producto, codigo, nombre, categoria, stock, precio
+SELECT *
 FROM productos
-WHERE stock < 10
-ORDER BY stock ASC;
+WHERE stock < 10;
 
 
 -- ####################################################################
@@ -119,7 +115,6 @@ ORDER BY stock ASC;
 -- ----------------------------------------------------------------------------
 -- 1) DDL: base de datos
 -- ----------------------------------------------------------------------------
-DROP DATABASE IF EXISTS ej2_nube_roja_studio;
 CREATE DATABASE ej2_nube_roja_studio
     CHARACTER SET utf8mb4
     COLLATE utf8mb4_spanish_ci;
@@ -224,50 +219,29 @@ INSERT INTO tareas (titulo, estado, prioridad, fecha_limite, id_proyecto, id_des
    ============================================================================ */
 
 -- Consulta 1: mostrar todos los desarrolladores asignados al proyecto "Space Adventure".
-SELECT d.id_desarrollador,
-       CONCAT(d.nombres, ' ', d.apellidos) AS desarrollador,
-       d.rol,
-       pd.horas_semana,
-       p.nombre AS proyecto
+SELECT d.id_desarrollador, d.nombres, d.apellidos, d.rol
 FROM desarrolladores AS d
 INNER JOIN proyecto_desarrollador AS pd ON pd.id_desarrollador = d.id_desarrollador
 INNER JOIN proyectos AS p              ON p.id_proyecto        = pd.id_proyecto
-WHERE p.nombre = 'Space Adventure'
-ORDER BY d.apellidos;
+WHERE p.nombre = 'Space Adventure';
 
 -- Consulta 2: listar todas las tareas pendientes.
-SELECT t.id_tarea,
-       t.titulo,
-       t.prioridad,
-       t.fecha_limite,
-       p.nombre AS proyecto,
-       CONCAT(d.nombres, ' ', d.apellidos) AS responsable
-FROM tareas AS t
-INNER JOIN proyectos AS p       ON p.id_proyecto        = t.id_proyecto
-INNER JOIN desarrolladores AS d ON d.id_desarrollador   = t.id_desarrollador
-WHERE t.estado = 'pendiente'
-ORDER BY t.fecha_limite;
+SELECT *
+FROM tareas
+WHERE estado = 'pendiente';
 
 -- Consulta 3: contar cuantas tareas tiene asignado cada desarrollador.
--- Se usa LEFT JOIN para que tambien aparezcan los que tienen 0 tareas.
-SELECT CONCAT(d.nombres, ' ', d.apellidos) AS desarrollador,
-       d.rol,
-       COUNT(t.id_tarea) AS total_tareas
+-- Se usa LEFT JOIN para que tambien aparezcan los que no tienen tareas.
+SELECT d.nombres, d.apellidos, COUNT(t.id_tarea) AS total_tareas
 FROM desarrolladores AS d
 LEFT JOIN tareas AS t ON t.id_desarrollador = d.id_desarrollador
-GROUP BY d.id_desarrollador, desarrollador, d.rol
-ORDER BY total_tareas DESC, desarrollador;
+GROUP BY d.id_desarrollador, d.nombres, d.apellidos;
 
 -- Consulta 4: mostrar los proyectos y la cantidad de desarrolladores que participan en cada uno.
-SELECT p.id_proyecto,
-       p.nombre AS proyecto,
-       p.plataforma,
-       p.estado,
-       COUNT(pd.id_desarrollador) AS total_desarrolladores
+SELECT p.nombre AS proyecto, COUNT(pd.id_desarrollador) AS total_desarrolladores
 FROM proyectos AS p
 LEFT JOIN proyecto_desarrollador AS pd ON pd.id_proyecto = p.id_proyecto
-GROUP BY p.id_proyecto, p.nombre, p.plataforma, p.estado
-ORDER BY total_desarrolladores DESC;
+GROUP BY p.id_proyecto, p.nombre;
 
 
 -- ####################################################################
@@ -282,7 +256,6 @@ ORDER BY total_desarrolladores DESC;
    Relacion: directores 1:N peliculas
    ============================================================================ */
 
-DROP DATABASE IF EXISTS ej3_sala_lumiere;
 CREATE DATABASE ej3_sala_lumiere
     CHARACTER SET utf8mb4
     COLLATE utf8mb4_spanish_ci;
@@ -345,39 +318,19 @@ INSERT INTO peliculas (titulo, genero, anio_estreno, duracion_minutos, idioma, c
    CONSULTAS SOLICITADAS
    ============================================================================ */
 
--- Consulta 1: mostrar todas las peliculas (con el director que las dirigio).
-SELECT p.id_pelicula,
-       p.titulo,
-       p.genero,
-       p.anio_estreno,
-       p.duracion_minutos,
-       CONCAT(d.nombres, ' ', d.apellidos) AS director
-FROM peliculas AS p
-INNER JOIN directores AS d ON d.id_director = p.id_director
-ORDER BY p.titulo;
+-- Consulta 1: mostrar todas las peliculas.
+SELECT *
+FROM peliculas;
 
 -- Consulta 2: mostrar las peliculas estrenadas despues de 2020.
-SELECT p.id_pelicula,
-       p.titulo,
-       p.genero,
-       p.anio_estreno,
-       CONCAT(d.nombres, ' ', d.apellidos) AS director
-FROM peliculas AS p
-INNER JOIN directores AS d ON d.id_director = p.id_director
-WHERE p.anio_estreno > 2020
-ORDER BY p.anio_estreno DESC, p.titulo;
+SELECT *
+FROM peliculas
+WHERE anio_estreno > 2020;
 
--- Consulta 3: mostrar las peliculas de un genero determinado (Ciencia ficcion).
-SELECT p.id_pelicula,
-       p.titulo,
-       p.anio_estreno,
-       p.duracion_minutos,
-       p.copias_disponibles,
-       CONCAT(d.nombres, ' ', d.apellidos) AS director
-FROM peliculas AS p
-INNER JOIN directores AS d ON d.id_director = p.id_director
-WHERE p.genero = 'Ciencia ficcion'
-ORDER BY p.anio_estreno DESC;
+-- Consulta 3: mostrar las peliculas de un genero determinado.
+SELECT *
+FROM peliculas
+WHERE genero = 'Ciencia ficcion';
 
 
 -- ####################################################################
@@ -394,7 +347,6 @@ ORDER BY p.anio_estreno DESC;
      - estudiantes 1:N matriculas
    ============================================================================ */
 
-DROP DATABASE IF EXISTS ej4_instituto_antares;
 CREATE DATABASE ej4_instituto_antares
     CHARACTER SET utf8mb4
     COLLATE utf8mb4_spanish_ci;
@@ -481,40 +433,21 @@ INSERT INTO matriculas (id_estudiante, periodo, fecha, estado) VALUES
    CONSULTAS SOLICITADAS
    ============================================================================ */
 
--- Consulta 1: mostrar todos los estudiantes (con su carrera).
-SELECT e.id_estudiante,
-       e.cedula,
-       CONCAT(e.apellidos, ' ', e.nombres) AS estudiante,
-       e.fecha_nacimiento,
-       e.ciudad,
-       c.nombre AS carrera
-FROM estudiantes AS e
-INNER JOIN carreras AS c ON c.id_carrera = e.id_carrera
-ORDER BY e.apellidos;
+-- Consulta 1: mostrar todos los estudiantes.
+SELECT *
+FROM estudiantes;
 
 -- Consulta 2: mostrar los estudiantes mayores de 18 anios.
--- TIMESTAMPDIFF calcula la edad exacta a partir de la fecha de nacimiento.
-SELECT e.id_estudiante,
-       CONCAT(e.apellidos, ' ', e.nombres) AS estudiante,
-       e.fecha_nacimiento,
-       TIMESTAMPDIFF(YEAR, e.fecha_nacimiento, CURDATE()) AS edad,
-       c.nombre AS carrera
-FROM estudiantes AS e
-INNER JOIN carreras AS c ON c.id_carrera = e.id_carrera
-WHERE TIMESTAMPDIFF(YEAR, e.fecha_nacimiento, CURDATE()) > 18
-ORDER BY edad DESC;
+-- TIMESTAMPDIFF calcula la edad a partir de la fecha de nacimiento.
+SELECT *
+FROM estudiantes
+WHERE TIMESTAMPDIFF(YEAR, fecha_nacimiento, CURDATE()) > 18;
 
 -- Consulta 3: mostrar los estudiantes de una carrera especifica.
-SELECT e.id_estudiante,
-       e.cedula,
-       CONCAT(e.apellidos, ' ', e.nombres) AS estudiante,
-       e.correo,
-       c.nombre    AS carrera,
-       c.modalidad
+SELECT e.*
 FROM estudiantes AS e
 INNER JOIN carreras AS c ON c.id_carrera = e.id_carrera
-WHERE c.nombre = 'Desarrollo de software'
-ORDER BY e.apellidos;
+WHERE c.nombre = 'Desarrollo de software';
 
 
 -- ####################################################################
@@ -532,7 +465,6 @@ ORDER BY e.apellidos;
      - torneos N:M equipos -> tabla puente torneo_equipo
    ============================================================================ */
 
-DROP DATABASE IF EXISTS ej5_liga_andina_esports;
 CREATE DATABASE ej5_liga_andina_esports
     CHARACTER SET utf8mb4
     COLLATE utf8mb4_spanish_ci;
@@ -643,59 +575,25 @@ INSERT INTO torneo_equipo (id_torneo, id_equipo, grupo, posicion_final) VALUES
    ============================================================================ */
 
 -- Consulta 1: mostrar los jugadores del equipo "Dragones Digitales".
-SELECT j.id_jugador,
-       j.nick,
-       j.nombre_real,
-       j.rol,
-       j.edad,
-       e.nombre AS equipo
+SELECT j.*
 FROM jugadores AS j
 INNER JOIN equipos AS e ON e.id_equipo = j.id_equipo
-WHERE e.nombre = 'Dragones Digitales'
-ORDER BY j.nick;
+WHERE e.nombre = 'Dragones Digitales';
 
 -- Consulta 2: listar los torneos programados para este anio.
-SELECT id_torneo,
-       nombre,
-       juego,
-       fecha_inicio,
-       fecha_fin,
-       sede,
-       premio_usd
+SELECT *
 FROM torneos
-WHERE YEAR(fecha_inicio) = YEAR(CURDATE())
-ORDER BY fecha_inicio;
+WHERE YEAR(fecha_inicio) = YEAR(CURDATE());
 
 -- Consulta 3: contar cuantos jugadores tiene cada equipo.
-SELECT e.id_equipo,
-       e.nombre AS equipo,
-       e.ciudad,
-       COUNT(j.id_jugador) AS total_jugadores
+SELECT e.nombre AS equipo, COUNT(j.id_jugador) AS total_jugadores
 FROM equipos AS e
 LEFT JOIN jugadores AS j ON j.id_equipo = e.id_equipo
-GROUP BY e.id_equipo, e.nombre, e.ciudad
-ORDER BY total_jugadores DESC, equipo;
+GROUP BY e.id_equipo, e.nombre;
 
 -- Consulta 4: mostrar que equipos participan en cada torneo.
-SELECT t.nombre   AS torneo,
-       t.juego,
-       t.fecha_inicio,
-       e.nombre   AS equipo,
-       te.grupo,
-       te.posicion_final
+SELECT t.nombre AS torneo, e.nombre AS equipo
 FROM torneos AS t
 INNER JOIN torneo_equipo AS te ON te.id_torneo = t.id_torneo
-INNER JOIN equipos AS e        ON e.id_equipo  = te.id_equipo
-ORDER BY t.fecha_inicio, te.grupo, e.nombre;
-
--- Variante compacta de la consulta 4: un renglon por torneo con la lista de equipos.
-SELECT t.nombre AS torneo,
-       t.juego,
-       COUNT(te.id_equipo)              AS total_equipos,
-       GROUP_CONCAT(e.nombre ORDER BY e.nombre SEPARATOR ', ') AS equipos_participantes
-FROM torneos AS t
-LEFT JOIN torneo_equipo AS te ON te.id_torneo = t.id_torneo
-LEFT JOIN equipos AS e        ON e.id_equipo  = te.id_equipo
-GROUP BY t.id_torneo, t.nombre, t.juego
-ORDER BY t.fecha_inicio;
+INNER JOIN equipos AS e        ON e.id_equipo  = te.id_equipo;
 
