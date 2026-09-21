@@ -104,11 +104,22 @@ Guia detallada en **[`docs/GUIA_HEIDISQL.md`](docs/GUIA_HEIDISQL.md)**. Resumen:
 4. Ejecuta el bloque de creacion con `Ctrl + F9`, refresca con `F5` y luego
    corre **cada consulta por separado** para capturar su resultado.
 
-Desde la linea de comandos tambien funciona:
+Tambien se puede importar sin abrir HeidiSQL, desde la linea de comandos:
 
 ```bash
 mysql -u root -p < sql/00_tarea1_completo.sql
 ```
+
+Para importar un export de una sola base (uno que no trae el `CREATE DATABASE`
+adentro), primero se crea la base y luego se indica a cual importar:
+
+```bash
+mysql -u root -p -e "CREATE DATABASE ej1_taller_prisma3d;"
+mysql -u root -p ej1_taller_prisma3d < ej1_taller_prisma3d_export.sql
+```
+
+La seccion 3 de la guia explica las cuatro formas de importar, y la seccion 5
+como escribir consultas propias sobre las bases ya importadas.
 
 > Si una base ya existe de una ejecucion anterior, eliminala antes de volver a
 > correr el script (en HeidiSQL: clic derecho sobre la base -> Eliminar).

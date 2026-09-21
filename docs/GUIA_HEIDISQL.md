@@ -41,27 +41,84 @@ conectarse.
 
 ---
 
-## 3. Cargar el script de la tarea
+## 3. Importar la base de datos desde el archivo `.sql`
 
-Hay dos formas; cualquiera es valida.
+Importar significa tomar un archivo `.sql` y ejecutarlo en el servidor para que
+las bases, las tablas y los datos queden creados. Hay cuatro formas; con
+cualquiera queda igual.
 
-### Opcion A - abrir el archivo (recomendada)
+### Opcion A - abrir el archivo en el editor (recomendada para la tarea)
+
+Conviene cuando quieres ver el codigo y ejecutar los bloques por partes, que es
+lo que necesitas para tomar las capturas.
 
 1. Menu **Archivo → Cargar archivo SQL...** (`Ctrl + O`).
-2. Elige el script que quieras:
+2. Elige el script:
    - `sql/00_tarea1_completo.sql` para crear los cinco ejercicios de una vez, o
    - `sql/01_productos.sql`, `sql/02_...` para trabajar ejercicio por ejercicio.
 3. Si HeidiSQL pregunta por la codificacion, deja **UTF-8**.
-4. El contenido aparece en la pestana **Consulta**.
+4. El contenido aparece en la pestana **Consulta**, listo para ejecutarse
+   (seccion 4).
 
-### Opcion B - copiar y pegar
+### Opcion B - importar el archivo directamente (sin abrirlo)
+
+Conviene cuando el `.sql` es grande o solo quieres que la base quede montada de
+una vez, sin revisar el codigo.
+
+1. Menu **Archivo → Ejecutar archivo(s) SQL...**
+2. Selecciona el `.sql` y confirma la codificacion **UTF-8**.
+3. HeidiSQL lo ejecuta de corrido y muestra el avance en una ventana de
+   progreso. Al terminar, pulsa **F5** en el arbol de la izquierda para ver las
+   bases nuevas.
+
+> Esta es tambien la forma de **volver a importar** un `.sql` que exportaste
+> antes (el de la seccion 8) en otra computadora o despues de formatear.
+
+### Opcion C - importar desde la linea de comandos
+
+Sin abrir HeidiSQL, desde CMD o PowerShell:
+
+```bat
+mysql -u root -p < ruta\al\archivo\00_tarea1_completo.sql
+```
+
+Si el archivo **no** trae el `CREATE DATABASE` adentro (por ejemplo un export
+de una sola base), primero crea la base y luego indicale a que base importar:
+
+```bat
+mysql -u root -p -e "CREATE DATABASE ej1_taller_prisma3d;"
+mysql -u root -p ej1_taller_prisma3d < ej1_taller_prisma3d_export.sql
+```
+
+En XAMPP, si el comando `mysql` no se reconoce, ubicate primero en la carpeta
+del programa:
+
+```bat
+cd C:\xampp\mysql\bin
+```
+
+### Opcion D - copiar y pegar
 
 Abre el `.sql` con el Bloc de notas, copia todo y pegalo en la pestana
 **Consulta** de HeidiSQL.
 
+### Comprobar que la importacion funciono
+
+Pulsa **F5** sobre el panel izquierdo. Deben aparecer las bases
+`ej1_taller_prisma3d`, `ej2_nube_roja_studio`, `ej3_sala_lumiere`,
+`ej4_instituto_antares` y `ej5_liga_andina_esports`, cada una con sus tablas
+adentro. Tambien puedes comprobarlo con una consulta:
+
+```sql
+SHOW DATABASES;
+USE ej1_taller_prisma3d;
+SHOW TABLES;
+SELECT COUNT(*) FROM productos;
+```
+
 ---
 
-## 4. Ejecutar
+## 4. Ejecutar el script
 
 | Accion | Atajo | Boton en la barra |
 |---|---|---|
@@ -88,7 +145,49 @@ Flujo recomendado para la tarea:
 
 ---
 
-## 5. Errores frecuentes y como resolverlos
+## 5. Escribir y ejecutar tus propias consultas
+
+Una vez importada la base, puedes consultarla cuando quieras sin volver a abrir
+el script.
+
+1. En el arbol de la izquierda, **doble clic sobre la base** que vas a consultar
+   (queda en negrita: es la base activa). Tambien sirve escribir
+   `USE ej1_taller_prisma3d;` y ejecutarlo.
+2. Abre una pestana de consulta nueva: **Ctrl + T**, o la pestana **Consulta**
+   de la parte superior.
+3. Escribe tu consulta y pulsa **`Ctrl + F9`** con el cursor dentro de ella.
+
+Ejemplos sobre las bases de esta tarea:
+
+```sql
+-- Ver que columnas tiene una tabla antes de consultarla
+DESCRIBE productos;
+
+-- Filtrar por un rango
+SELECT * FROM productos WHERE precio BETWEEN 20 AND 100;
+
+-- Buscar por texto parcial
+SELECT * FROM peliculas WHERE titulo LIKE '%neon%';
+
+-- Contar filas
+SELECT COUNT(*) AS total_estudiantes FROM estudiantes;
+```
+
+Cosas utiles del editor:
+
+- **Autocompletado:** escribe el nombre de la tabla, un punto, y HeidiSQL
+  sugiere las columnas.
+- **Pestana Datos:** haz clic en una tabla del arbol y luego en la pestana
+  **Datos** para ver y editar las filas sin escribir SQL.
+- **Ver los resultados completos:** si una consulta devuelve muchas filas,
+  HeidiSQL muestra las primeras; el boton **Mostrar todo** de la barra inferior
+  carga el resto.
+- **Exportar la rejilla:** clic derecho sobre los resultados →
+  **Exportar datos de la rejilla**, para llevarlos a Excel o a un archivo CSV.
+
+---
+
+## 6. Errores frecuentes y como resolverlos
 
 | Mensaje | Causa | Solucion |
 |---|---|---|
@@ -101,7 +200,7 @@ Flujo recomendado para la tarea:
 
 ---
 
-## 6. Capturas para el informe PDF
+## 7. Capturas para el informe PDF
 
 Por cada consulta solicitada, toma una captura donde se vea:
 
@@ -122,7 +221,7 @@ consulta, para que compares antes de capturar.
 
 ---
 
-## 7. Exportar el archivo `.sql` desde HeidiSQL
+## 8. Exportar el archivo `.sql` desde HeidiSQL
 
 El enunciado pide entregar el `.sql` **exportado desde HeidiSQL**, no solo el
 archivo escrito a mano.
@@ -148,7 +247,7 @@ archivo escrito a mano.
 
 ---
 
-## 8. Entrega
+## 9. Entrega
 
 Segun el enunciado se entrega el **link de una carpeta de Drive** que contenga:
 
@@ -161,7 +260,7 @@ como "Restringido", el docente no podra abrirla.
 
 ---
 
-## 9. Referencias
+## 10. Referencias
 
 - HeidiSQL. *Documentation*. https://www.heidisql.com/help.php
 - Oracle. *MySQL 8.0 Reference Manual — SELECT Statement*.
