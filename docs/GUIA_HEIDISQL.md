@@ -143,6 +143,42 @@ Flujo recomendado para la tarea:
 > (`Resultado #1`, `#2`, ...) y es mas dificil mostrar que consulta produjo que
 > tabla.
 
+### Ejemplo completo: las 3 consultas del ejercicio 1
+
+1. Carga `sql/01_productos.sql` (seccion 3, opcion A).
+2. Selecciona desde `CREATE DATABASE ej1_taller_prisma3d` hasta el punto y coma
+   del ultimo `INSERT`, y pulsa **`Ctrl + F9`**. En la barra inferior debe decir
+   que las sentencias se ejecutaron sin errores.
+3. Pulsa **F5** en el arbol de la izquierda y haz **doble clic** sobre
+   `ej1_taller_prisma3d`. El nombre queda en negrita.
+4. Baja hasta la primera consulta y **selecciona unicamente estas tres lineas**:
+
+   ```sql
+   SELECT *
+   FROM productos;
+   ```
+
+5. Pulsa **`Ctrl + F9`**. Abajo aparece la rejilla con los 15 productos y, en la
+   barra de estado, algo como `15 filas`. **Esa es tu captura de la consulta 1.**
+6. Repite con la consulta 2 (`WHERE precio > 50`, devuelve 7 filas) y con la
+   consulta 3 (`WHERE stock < 10`, devuelve 8 filas).
+7. Pasa al siguiente ejercicio: carga su archivo, ejecuta su bloque de creacion,
+   activa su base con doble clic y corre sus consultas igual.
+
+### Que base activar en cada ejercicio
+
+| Ejercicio | Archivo | Base que debes activar | Consultas |
+|---|---|---|---|
+| 1 | `sql/01_productos.sql` | `ej1_taller_prisma3d` | 3 |
+| 2 | `sql/02_estudio_videojuegos.sql` | `ej2_nube_roja_studio` | 4 |
+| 3 | `sql/03_biblioteca_multimedia.sql` | `ej3_sala_lumiere` | 3 |
+| 4 | `sql/04_gestion_estudiantes.sql` | `ej4_instituto_antares` | 3 |
+| 5 | `sql/05_torneo_esports.sql` | `ej5_liga_andina_esports` | 4 |
+
+> Si olvidas activar la base correcta, HeidiSQL responde `No database selected`
+> o te muestra datos de otro ejercicio. Revisa siempre cual esta en negrita
+> antes de capturar.
+
 ---
 
 ## 5. Escribir y ejecutar tus propias consultas
