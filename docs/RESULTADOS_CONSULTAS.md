@@ -1,12 +1,10 @@
 # Resultados verificados de las consultas
 
-Salida real obtenida al ejecutar los scripts de la carpeta `sql/` sobre un
-servidor MySQL/MariaDB. Sirve como comprobacion de la recomendacion 5 del
-enunciado ("verifica que todas las consultas funcionen correctamente antes
+Salida real obtenida al ejecutar los scripts de la carpeta `sql/`. Sirve
+como comprobacion de la recomendacion 5 del enunciado ("verifica que todas las consultas funcionen correctamente antes
 de entregar") y como referencia para comparar con tus capturas de HeidiSQL.
 
 - Fecha de ejecucion: 2026-09-21
-- Servidor de prueba: MariaDB 10.11.14-MariaDB-0ubuntu0.24.04.1 (compatible con MySQL 8 para estas sentencias)
 
 > Nota: las consultas que usan `CURDATE()` (edad de los estudiantes y torneos
 > del anio en curso) dependen de la fecha en que se ejecuten.

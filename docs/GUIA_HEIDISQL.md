@@ -10,7 +10,7 @@ archivo `.sql` que se entrega.
 
 | Herramienta | Para que sirve | Donde se obtiene |
 |---|---|---|
-| Servidor MySQL o MariaDB | Guarda las bases de datos | XAMPP, Laragon, MySQL Installer o MariaDB Server |
+| Servidor MySQL | Guarda las bases de datos | XAMPP, Laragon o MySQL Installer |
 | HeidiSQL | Cliente grafico con el que se escriben y ejecutan las consultas | https://www.heidisql.com/download.php |
 
 Si usas **XAMPP**, abre el *Control Panel* y pulsa **Start** en el modulo
@@ -28,7 +28,7 @@ conectarse.
 
    | Campo | Valor habitual |
    |---|---|
-   | Tipo de red | `MariaDB or MySQL (TCP/IP)` |
+   | Tipo de red | la opcion TCP/IP para MySQL (es la que viene por defecto) |
    | Nombre de host / IP | `127.0.0.1` |
    | Usuario | `root` |
    | Contrasena | vacia en XAMPP; la que definiste si instalaste MySQL aparte |
@@ -168,5 +168,5 @@ como "Restringido", el docente no podra abrirla.
   https://dev.mysql.com/doc/refman/8.0/en/select.html
 - Oracle. *MySQL 8.0 Reference Manual — JOIN Clause*.
   https://dev.mysql.com/doc/refman/8.0/en/join.html
-- MariaDB Foundation. *Foreign Keys*.
-  https://mariadb.com/kb/en/foreign-keys/
+- Oracle. *MySQL 8.0 Reference Manual — FOREIGN KEY Constraints*.
+  https://dev.mysql.com/doc/refman/8.0/en/create-table-foreign-keys.html

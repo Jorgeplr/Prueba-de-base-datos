@@ -97,7 +97,7 @@ por equipo · equipos por torneo (en dos formatos).
 
 Guia detallada en **[`docs/GUIA_HEIDISQL.md`](docs/GUIA_HEIDISQL.md)**. Resumen:
 
-1. Enciende el servidor MySQL/MariaDB (XAMPP → Start en MySQL).
+1. Enciende el servidor MySQL (XAMPP → Start en MySQL).
 2. Abre HeidiSQL y conecta a `127.0.0.1`, usuario `root`, puerto `3306`.
 3. **Archivo → Cargar archivo SQL** y elige `sql/00_tarea1_completo.sql`
    (o el archivo de un ejercicio).
@@ -152,5 +152,6 @@ El detalle de como exportar y compartir esta en la seccion 7 y 8 de la guia.
 
 - Oracle. *MySQL 8.0 Reference Manual* — Data Definition Statements, SELECT, JOIN,
   Aggregate Functions. https://dev.mysql.com/doc/refman/8.0/en/
-- MariaDB Foundation. *Foreign Keys* y *TIMESTAMPDIFF*. https://mariadb.com/kb/en/
+- Oracle. *MySQL 8.0 Reference Manual — FOREIGN KEY Constraints*.
+  https://dev.mysql.com/doc/refman/8.0/en/create-table-foreign-keys.html
 - HeidiSQL. *Documentation*. https://www.heidisql.com/help.php

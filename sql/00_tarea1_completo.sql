@@ -3,7 +3,6 @@
    ----------------------------------------------------------------------------
    Asignatura : Lenguaje informatico para desarrollo de productos
    Unidad 2   : Introduccion a bases de datos para medios digitales
-   Motor      : MySQL 8 / MariaDB      Cliente: HeidiSQL
 
    Este archivo reune los cinco ejercicios en un solo script. Cada ejercicio
    crea su propia base de datos, por lo que puede ejecutarse completo de una
@@ -31,7 +30,6 @@
    ----------------------------------------------------------------------------
    Caso: "Taller Prisma 3D", una empresa que comercializa insumos y repuestos
          para impresion 3D, necesita administrar los productos que vende.
-   Motor: MySQL 8 / MariaDB  -  Cliente: HeidiSQL
    ============================================================================ */
 
 -- ----------------------------------------------------------------------------
